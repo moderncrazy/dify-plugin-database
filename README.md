@@ -1,7 +1,7 @@
 ## database
 
 **Author:** hjlarry  
-**Version:** 0.0.5  
+**Version:** 0.0.7
 **Type:** tool   
 **Repo:** [https://github.com/hjlarry/dify-plugin-database](https://github.com/hjlarry/dify-plugin-database)  
 **Feature Request:** [issues](https://github.com/hjlarry/dify-plugin-database/issues)  
@@ -57,6 +57,9 @@ curl -X POST 'https://daemon-plugin.dify.dev/o3wvwZfYFLU5iGopr5CxYmGaM5mWV7xf/sq
 
 
 ### Changelog
+
+#### 0.0.7
+1. fix `sql_execute` read queries not ending transactions promptly after `SELECT` or `WITH`, preventing database sessions from staying idle in transaction [issue](https://github.com/hjlarry/dify-plugin-database/issues/121)
 
 #### 0.0.6
 1. support get more table info of `get table schema` tool

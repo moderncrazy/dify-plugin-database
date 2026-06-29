@@ -1,7 +1,7 @@
 ## 数据库
 
 **作者：** hjlarry  
-**版本：** 0.0.6  
+**版本：** 0.0.7
 **类型：** 工具  
 **仓库：** [https://github.com/hjlarry/dify-plugin-database](https://github.com/hjlarry/dify-plugin-database)  
 **功能请求：** [issues](https://github.com/hjlarry/dify-plugin-database/issues)  
@@ -56,6 +56,9 @@ curl -X POST 'https://daemon-plugin.dify.dev/o3wvwZfYFLU5iGopr5CxYmGaM5mWV7xf/sq
 ```
 
 ### 更新日志
+
+#### 0.0.7
+1. 修复 `sql_execute` 执行 `SELECT` 或 `WITH` 读查询后事务未及时结束的问题，避免数据库会话停留在 idle in transaction 状态 [issue](https://github.com/hjlarry/dify-plugin-database/issues/121)
 
 #### 0.0.6
 1. 支持在 `get table schema` 工具中获取更多信息，例如表和字段的注释、外键关联索引等
