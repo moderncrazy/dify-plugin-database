@@ -30,41 +30,50 @@ class SQLExecuteTool(Tool):
 
         try:
             if re.match(r'^\s*(SELECT|WITH)\s+', query, re.IGNORECASE):
-                rows = db.query(query)
-                if format == "json":
-                    result = rows.as_dict()
-                    yield self.create_json_message({"result": result})
-                elif format == "md":
-                    result = str(rows.dataset)
-                    yield self.create_text_message(result)
-                elif format == "csv":
-                    result = rows.export("csv").encode()
-                    yield self.create_blob_message(
-                        result, meta={"mime_type": "text/csv", "filename": "result.csv"}
-                    )
-                elif format == "yaml":
-                    result = rows.export("yaml").encode()
-                    yield self.create_blob_message(
-                        result,
-                        meta={"mime_type": "text/yaml", "filename": "result.yaml"},
-                    )
-                elif format == "xlsx":
-                    result = rows.export("xlsx")
-                    yield self.create_blob_message(
-                        result,
-                        meta={
-                            "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                            "filename": "result.xlsx",
-                        },
-                    )
-                elif format == "html":
-                    result = rows.export("html").encode()
-                    yield self.create_blob_message(
-                        result,
-                        meta={"mime_type": "text/html", "filename": "result.html"},
-                    )
-                else:
-                    raise ValueError(f"Unsupported format: {format}")
+                with db.get_connection() as conn:
+                    trans = conn._conn.begin()
+                    try:
+                        rows = conn.query(query, fetchall=True)
+                        if format == "json":
+                            result = rows.as_dict()
+                            message = self.create_json_message({"result": result})
+                        elif format == "md":
+                            result = str(rows.dataset)
+                            message = self.create_text_message(result)
+                        elif format == "csv":
+                            result = rows.export("csv").encode()
+                            message = self.create_blob_message(
+                                result,
+                                meta={"mime_type": "text/csv", "filename": "result.csv"},
+                            )
+                        elif format == "yaml":
+                            result = rows.export("yaml").encode()
+                            message = self.create_blob_message(
+                                result,
+                                meta={"mime_type": "text/yaml", "filename": "result.yaml"},
+                            )
+                        elif format == "xlsx":
+                            result = rows.export("xlsx")
+                            message = self.create_blob_message(
+                                result,
+                                meta={
+                                    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                    "filename": "result.xlsx",
+                                },
+                            )
+                        elif format == "html":
+                            result = rows.export("html").encode()
+                            message = self.create_blob_message(
+                                result,
+                                meta={"mime_type": "text/html", "filename": "result.html"},
+                            )
+                        else:
+                            raise ValueError(f"Unsupported format: {format}")
+                        trans.commit()
+                    except Exception:
+                        trans.rollback()
+                        raise
+                    yield message
             else:
                 with db.get_connection() as conn:
                     trans = conn._conn.begin()
