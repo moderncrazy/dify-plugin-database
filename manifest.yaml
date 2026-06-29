@@ -1,6 +1,6 @@
 version: 0.0.7
 type: plugin
-author: hjlarry
+author: moderncrazy
 name: database
 label:
   en_US: database

@@ -1,6 +1,6 @@
 ## 数据库
 
-**作者：** hjlarry  
+**作者：** moderncrazy
 **版本：** 0.0.7
 **类型：** 工具  
 **仓库：** [https://github.com/hjlarry/dify-plugin-database](https://github.com/hjlarry/dify-plugin-database)  

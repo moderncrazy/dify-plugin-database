@@ -1,6 +1,6 @@
 ## database
 
-**Author:** hjlarry  
+**Author:** moderncrazy
 **Version:** 0.0.7
 **Type:** tool   
 **Repo:** [https://github.com/hjlarry/dify-plugin-database](https://github.com/hjlarry/dify-plugin-database)  
